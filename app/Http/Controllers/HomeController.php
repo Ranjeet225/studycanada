@@ -15,9 +15,10 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $secondConnectionUsers = DB::connection('mysql_second')->table('users')->take(5)->get();
-        dd($secondConnectionUsers);
 
+
+        // $secondConnectionCountry = DB::connection('mysql_second')->table('users')->take(5)->get();
+        // dd($secondConnectionCountry);
         $country = DB::table('country')->select('name', 'id', 'country_code')->get();
         $slider = DB::table('sliders')->where('status', '1')->first();
         $countryId = $slider->country_id;

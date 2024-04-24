@@ -388,7 +388,7 @@
                             <div class="card customcard ">
                                 @if (!empty($data->profile_picture))
                                     <img class="card-img-top"
-                                        src="{{ asset('admin/assets/uploads/') }}/{{ $data->profile_picture }}"
+                                        src="{{ asset('admin/uploads/testimonials') }}/{{ $data->profile_picture }}"
                                         alt="Card image cap">
                                 @endif
                                 <div class="card-body">
