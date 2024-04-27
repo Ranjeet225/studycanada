@@ -6,6 +6,9 @@ use Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+
+
 class AdminController extends Controller{
 
     public function index(){
@@ -20,8 +23,25 @@ class AdminController extends Controller{
         //                 ->groupBy('country.id', 'country.name')
         //                 ->havingRaw('COUNT(universities.country_id) > 1')
         //                 ->get();
-        $universitiesCounts = DB::table('universities')->count();
-        $countryCounts = DB::table('country')->count();
+        $countryData = Http::get('https://overseaseducationlane.com/api/admin/country_list');
+        if ($countryData->successful()) {
+            $countryResponse = json_decode($countryData->body())->data;
+            $countries = is_array($countryResponse) ? $countryResponse : [$countryResponse];
+            $countryCounts = count($countries);
+
+        } else {
+            $statusCode = $countryData->status();
+        }
+
+        $universityData = Http::get('https://overseaseducationlane.com/api/get_univercity');
+        if ($universityData->successful()) {
+            $universityResponse = json_decode($universityData->body())->data;
+            $universities = is_array($universityResponse) ? $universityResponse : [$universityResponse];
+            $universitiesCounts = count($universities);
+        } else {
+            $statusCode = $universityData->status();
+        }
+
         $slidersCounts = DB::table('sliders')->count();
         $enquirymailsCounts = DB::table('enquiry_mails')->count();
         $testimonialsCounts = DB::table('testimonials')->count();

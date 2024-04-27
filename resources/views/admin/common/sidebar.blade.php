@@ -25,11 +25,11 @@ we <!--**********************************
              </li>
              <li @if ($isActiveCountry || $isActiveState ||  $isActiveCountryUniversity) class="mm-active" @endif ><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-381-battery-1"></i>
-                    <span class="nav-text">Country Master</span>
+                    <span class="nav-text"> Master</span>
                 </a>
                 <ul aria-expanded="false" @if ($isActiveCountry || $isActiveState ||  $isActiveCountryUniversity) class="mm-active mm-collapse mm-show" @endif>
-                    <li  @if ($isActiveCountry ) class="mm-active" @endif><a href="{{route('getCountry')}}">Country</a></li>
-					<li  @if ( $isActiveState ) class="mm-active" @endif><a href="{{route('getState')}}">State</a></li>
+                    {{-- <li  @if ($isActiveCountry ) class="mm-active" @endif><a href="{{route('getCountry')}}">Country</a></li> --}}
+					{{-- <li  @if ( $isActiveState ) class="mm-active" @endif><a href="{{route('getState')}}">State</a></li> --}}
 					<li  @if ( $isActiveCountryUniversity) class="mm-active" @endif><a href="{{route('country.university')}}">About Country University</a></li>
                 </ul>
             </li>
@@ -54,7 +54,7 @@ we <!--**********************************
                               request()->routeIs('edit.university') ||
                              request()->routeIs('show.university');
             @endphp
-            <li @if ($isActiveuniversity) class="mm-active" @endif>
+            {{-- <li @if ($isActiveuniversity) class="mm-active" @endif>
                 <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-381-cloud-computing"></i>
                     <span class="nav-text">University master</span>
@@ -63,7 +63,7 @@ we <!--**********************************
                     <li  @if ($isActiveuniversity) class="mm-active" @endif><a href="{{route('getUniversity')}}"  >University</a></li>
                 </ul>
 
-            </li>
+            </li> --}}
             @php
           $isActivetestimonial =  request()->routeIs('create.testimonial') ||
                                 request()->routeIs('store.testimonial') ||

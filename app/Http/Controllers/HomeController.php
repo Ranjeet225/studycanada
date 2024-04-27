@@ -8,6 +8,8 @@ use App\Mail\WelcomeMail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\EnquiryMail;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
+
 class HomeController extends Controller
 {
     /**
@@ -16,23 +18,39 @@ class HomeController extends Controller
     public function index(Request $request)
     {
 
-
-        // $secondConnectionCountry = DB::connection('mysql_second')->table('users')->take(5)->get();
-        // dd($secondConnectionCountry);
-        $country = DB::table('country')->select('name', 'id', 'country_code')->get();
+        $countryData = Http::get('https://overseaseducationlane.com/api/admin/country_list');
+        if ($countryData->successful()) {
+            $country = json_decode($countryData->body())->data;
+        } else {
+            $statusCode = $countryData->status();
+        }
         $slider = DB::table('sliders')->where('status', '1')->first();
         $countryId = $slider->country_id;
+        if(empty($countryId)){
+            $countryId =82;
+        }
         $testimonials = DB::table('testimonials')->take(3)->get();
+        $universityData = Http::post('https://overseaseducationlane.com/api/get-university-by-country-name', [
+            'country_id' =>$countryId,
+        ]);
+        if ($universityData->successful()) {
+            $universities  = json_decode($universityData->body());
+        } else {
+            $statusCode = $universityData->status();
+        }
+        $countryName = Http::get('https://overseaseducationlane.com/api/admin/country_edit/'.$countryId);
+        if ($countryName->successful()) {
+            $countryName  = json_decode($countryName->body());
+        } else {
+            $statusCode = $countryName->status();
+        }
         $aboutcountry = DB::table('country_universities')->where('country_id', $countryId)->get();
-        $universities = DB::table('universities')->where('country_id', $countryId)->get();
         $sliders = DB::table('sliders')->where('country_id', $countryId)->get();
-        $countryName = $country->where('id', $countryId)->first();
         $sliderImages = [];
         foreach ($sliders as $slider) {
             $images = DB::table('images')->where('slider_id', $slider->id)->get();
             $sliderImages[] = $images;
         }
-
         return view('index', compact('universities', 'sliderImages', 'country', 'testimonials', 'countryName','aboutcountry'));
     }
 
@@ -54,9 +72,24 @@ class HomeController extends Controller
     public function getCountryData(Request $request)
     {
         // dd($request->countryId);
-        $countryName=DB::table('country')->where('id',$request->countryId)->first();
-        $universities = DB::table('universities')->where('country_id',$request->countryId)->get();
-        $universityCount =$universities->count();
+
+        $countryName =  Http::get('https://overseaseducationlane.com/api/admin/country_edit/'.$request->countryId);
+        if ($countryName->successful()) {
+            $countryName  = json_decode($countryName->body());
+        } else {
+            $statusCode = $countryName->status();
+        }
+        $universityData = Http::post('https://overseaseducationlane.com/api/get-university-by-country-name', [
+            'country_id' =>$request->countryId,
+        ]);
+        if ($universityData->successful()) {
+            $universities  = json_decode($universityData->body());
+        } else {
+            $statusCode = $universityData->status();
+        }
+        $universityCount = count($universities);
+        // $countryName=DB::table('country')->where('id',$request->countryId)->first();
+        // $universities = DB::table('universities')->where('country_id',$request->countryId)->get();
         $sliders = DB::table('sliders')->where('country_id',$request->countryId)->get();
         $sliderImages = [];
         foreach ($sliders as $slider) {

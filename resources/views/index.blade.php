@@ -71,6 +71,8 @@
                                             </select>
                                         </form> --}}
                                 {{-- <form id="countryForm" action="{{ route('index') }}" method="GET"> --}}
+                                    {{-- @dd($allCountry); --}}
+
                                 <div class="input-group" style="width: 300px">
                                     <select class="custom-select form-control" id="inputGroupSelect04" name="country"
                                         style="height: 40px;">
@@ -82,9 +84,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-
-
-
                                 {{-- </form> --}}
 
                                 {{-- <div class="input-group-append">
@@ -290,7 +289,7 @@
         <section class="">
             <div class="container">
                 <div class="sec-title text-center">
-                    <h4 class="univerheading universitycount"> Over {{ $universities->count() }} + Universities and Colleges to study in
+                    <h4 class="univerheading universitycount"> Over {{ count($universities) }} + Universities and Colleges to study in
                        {{ $countryName->name }}
                     </h4>
                     <p class="findourheading"> Find out which
@@ -307,19 +306,22 @@
                 <div class="sec-title text-center">
                     <div class="row universityData">
                         @foreach ($universities as $item)
+                            @if ($index >= 12)
+                                @break
+                            @endif
                             <div class="col-md-4 ">
                                 <div class="card">
-                                    @if (!empty($item->banner))
+                                    @if (!empty($item->thumbnail))
                                         <img class="card-img-top"
-                                            src="{{ asset('admin/uploads/university') }}/{{ $item->banner }}"
+                                            src="{{ $item->thumbnail }}"
                                             alt="Card image cap">
                                     @endif
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-3 unipd">
-                                                @if (!empty($item->banner))
+                                                @if (!empty($item->logo))
                                                     <img
-                                                        src="{{ asset('admin/uploads/university') }}/{{ $item->banner }}">
+                                                        src="{{ $item->logo }}">
                                                 @endif
                                             </div>
                                             <div class="col-md-9 align-self-center">
@@ -327,36 +329,13 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <ul class="deslist">
-                                                    <li> <svg class="status-svg" width="27" height="20"
-                                                            viewBox="0 0 27 27" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <g clip-path="url(#clip0_1_1103)">
-                                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                    d="M19.1728 1.47705C23.3572 1.47705 26.1688 4.41436 26.1688 8.78571V18.9729C26.1688 23.3442 23.3572 26.2814 19.1728 26.2814H8.36033C4.17588 26.2814 1.36432 23.3442 1.36432 18.9729V8.78571C1.36432 4.41436 4.17588 1.47705 8.36033 1.47705H19.1728ZM19.1728 3.20759H8.36033C5.16229 3.20759 3.09486 5.39616 3.09486 8.78571V18.9729C3.09486 22.3624 5.16229 24.5509 8.36033 24.5509H19.1728C22.3719 24.5509 24.4382 22.3624 24.4382 18.9729V8.78571C24.4382 5.39616 22.3719 3.20759 19.1728 3.20759ZM8.4262 10.9402C8.90383 10.9402 9.29147 11.3279 9.29147 11.8055V19.7199C9.29147 20.1975 8.90383 20.5852 8.4262 20.5852C7.94857 20.5852 7.56093 20.1975 7.56093 19.7199V11.8055C7.56093 11.3279 7.94857 10.9402 8.4262 10.9402ZM13.8105 7.15149C14.2881 7.15149 14.6757 7.53913 14.6757 8.01676V19.7187C14.6757 20.1963 14.2881 20.5839 13.8105 20.5839C13.3329 20.5839 12.9452 20.1963 12.9452 19.7187V8.01676C12.9452 7.53913 13.3329 7.15149 13.8105 7.15149ZM19.1063 15.1223C19.584 15.1223 19.9716 15.51 19.9716 15.9876V19.7187C19.9716 20.1963 19.584 20.5839 19.1063 20.5839C18.6287 20.5839 18.2411 20.1963 18.2411 19.7187V15.9876C18.2411 15.51 18.6287 15.1223 19.1063 15.1223Z"
-                                                                    fill="black" />
-                                                            </g>
-                                                            <defs>
-                                                                <clipPath id="clip0_1_1103">
-                                                                    <rect width="26.3042" height="26.3042" fill="white"
-                                                                        transform="translate(0.210571 0.322998)" />
-                                                                </clipPath>
-                                                            </defs>
-                                                        </svg> Current Status - Admission Open</li>
-                                                    <li> <svg class="fees-svg" width="31" height="20"
-                                                            viewBox="0 0 31 27" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <g clip-path="url(#clip0_1_1108)">
-                                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                    d="M21.4865 0.533691C25.9975 0.533691 29.6671 4.20315 29.6671 8.71562V18.5059C29.6671 23.0169 25.9975 26.6878 21.4865 26.6878H9.69506C5.18395 26.6878 1.51312 23.0169 1.51312 18.5059V8.71562C1.51312 4.20315 5.18395 0.533691 9.69506 0.533691H21.4865ZM21.4865 2.57987H9.69506C6.31206 2.57987 3.55928 5.33264 3.55928 8.71562V18.5059C3.55928 21.8888 6.31206 24.6417 9.69506 24.6417H21.4865C24.8694 24.6417 27.6208 21.8888 27.6208 18.5059V18.1238L23.1221 18.1247C20.5344 18.1247 18.4283 16.0199 18.4268 13.4335C18.4268 10.8445 20.5331 8.73828 23.1221 8.73691L27.6208 8.73609V8.71562C27.6208 5.33264 24.8694 2.57987 21.4865 2.57987ZM27.6208 10.7823L23.1221 10.7831C21.6612 10.7844 20.4731 11.9726 20.4731 13.4322C20.4731 14.8904 21.6625 16.0786 23.1221 16.0786L27.6208 16.0777V10.7823ZM23.7463 12.3245C24.311 12.3245 24.7694 12.7829 24.7694 13.3476C24.7694 13.9123 24.311 14.3707 23.7463 14.3707H23.3207C22.756 14.3707 22.2976 13.9123 22.2976 13.3476C22.2976 12.7829 22.756 12.3245 23.3207 12.3245H23.7463ZM16.0887 6.72416C16.6534 6.72416 17.1117 7.1825 17.1117 7.74725C17.1117 8.31199 16.6534 8.77032 16.0887 8.77032H8.72381C8.15907 8.77032 7.70072 8.31199 7.70072 7.74725C7.70072 7.1825 8.15907 6.72416 8.72381 6.72416H16.0887Z"
-                                                                    fill="black"></path>
-                                                            </g>
-                                                            <defs>
-                                                                <clipPath id="clip0_1_1108">
-                                                                    <rect width="29.5923" height="26.3042" fill="white"
-                                                                        transform="translate(0.566284 0.533691)"></rect>
-                                                                </clipPath>
-                                                            </defs>
-                                                        </svg> Approximate Fees(€) - €72 to 102/Sem</li>
+                                                    <li>
+                                                        <i class="fa fa-map"></i>
+                                                        Location - {{$item->university_location}}</li>
+                                                    <li>
+                                                        <i class="fa fa-flag"></i>
+                                                        Country - {{$item->country->name}}
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -658,37 +637,41 @@
                                 if (response.universities) {
                                     $('.universityData').empty();
                                     $.each(response.universities, function(index, item) {
-                                        console.log(item);
-                                        var html = '<div class="col-md-4">' +
-                                            '<div class="card">' +
-                                            '<div class="card-body">' +
-                                            '<div class="row">' +
-                                            '<div class="col-md-3 unipd">' +
-                                            '<img src="{{ asset('admin/uploads/university') }}/' +
-                                            item.banner + '">' +
-                                            '</div>' +
-                                            '<div class="col-md-9 align-self-center">' +
-                                            '<h5 class="unihd">' + item.university_name +
-                                            '</h5>' +
-                                            '</div>' +
-                                            '<div class="col-md-12">' +
-                                            '<ul class="deslist">' +
-                                            '<li> <svg class="status-svg" width="27" height="20" viewBox="0 0 27 27" fill="none">' +
-                                            '<path fill-rule="evenodd" clip-rule="evenodd" d="M19.1728 1.47705C23.3572 1.47705 26.1688 4.41436 26.1688 8.78571V18.9729C26.1688 23.3442 23.3572 26.2814 19.1728 26.2814H8.36033C4.17588 26.2814 1.36432 23.3442 1.36432 18.9729V8.78571C1.36432 4.41436 4.17588 1.47705 8.36033 1.47705H19.1728ZM19.1728 3.20759H8.36033C5.16229 3.20759 3.09486 5.39616 3.09486 8.78571V18.9729C3.09486 22.3624 5.16229 24.5509 8.36033 24.5509H19.1728C22.3719 24.5509 24.4382 22.3624 24.4382 18.9729V8.78571C24.4382 5.39616 22.3719 3.20759 19.1728 3.20759ZM8.4262 10.9402C8.90383 10.9402 9.29147 11.3279 9.29147 11.8055V19.7199C9.29147 20.1975 8.90383 20.5852 8.4262 20.5852C7.94857 20.5852 7.56093 20.1975 7.56093 19.7199V11.8055C7.56093 11.3279 7.94857 10.9402 8.4262 10.9402ZM13.8105 7.15149C14.2881 7.15149 14.6757 7.53913 14.6757 8.01676V19.7187C14.6757 20.1963 14.2881 20.5839 13.8105 20.5839C13.3329 20.5839 12.9452 20.1963 12.9452 19.7187V8.01676C12.9452 7.53913 13.3329 7.15149 13.8105 7.15149ZM19.1063 15.1223C19.584 15.1223 19.9716 15.51 19.9716 15.9876V19.7187C19.9716 20.1963 19.584 20.5839 19.1063 20.5839C18.6287 20.5839 18.2411 20.1963 18.2411 19.7187V15.9876C18.2411 15.51 18.6287 15.1223 19.1063 15.1223Z" fill="black" /></svg> Current Status - Admission Open</li>' +
-                                            '<li> <svg class="fees-svg" width="31" height="20" viewBox="0 0 31 27" fill="none">' +
-                                            '<path fill-rule="evenodd" clip-rule="evenodd" d="M21.4865 0.533691C25.9975 0.533691 29.6671 4.20315 29.6671 8.71562V18.5059C29.6671 23.0169 25.9975 26.6878 21.4865 26.6878H9.69506C5.18395 26.6878 1.51312 23.0169 1.51312 18.5059V8.71562C1.51312 4.20315 5.18395 0.533691 9.69506 0.533691H21.4865ZM21.4865 2.57987H9.69506C6.31206 2.57987 3.55928 5.33264 3.55928 8.71562V18.5059C3.55928 21.8888 6.31206 24.6417 9.69506 24.6417H21.4865C24.8694 24.6417 27.6208 21.8888 27.6208 18.5059V18.1238L23.1221 18.1247C20.5344 18.1247 18.4283 16.0199 18.4268 13.4335C18.4268 10.8445 20.5331 8.73828 23.1221 8.73691L27.6208 8.73609V8.71562C27.6208 5.33264 24.8694 2.57987 21.4865 2.57987ZM27.6208 10.7823L23.1221 10.7831C21.6612 10.7844 20.4731 11.9726 20.4731 13.4322C20.4731 14.8904 21.6625 16.0786 23.1221 16.0786L27.6208 16.0777V10.7823ZM23.7463 12.3245C24.311 12.3245 24.7694 12.7829 24.7694 13.3476C24.7694 13.9123 24.311 14.3707 23.7463 14.3707H23.3207C22.756 14.3707 22.2976 13.9123 22.2976 13.3476C22.2976 12.7829 22.756 12.3245 23.3207 12.3245H23.7463ZM16.0887 6.72416C16.6534 6.72416 17.1117 7.1825 17.1117 7.74725C17.1117 8.31199 16.6534 8.77032 16.0887 8.77032H8.72381C8.15907 8.77032 7.70072 8.31199 7.70072 7.74725C7.70072 7.1825 8.15907 6.72416 8.72381 6.72416H16.0887Z" fill="black"></path>' +
-                                            '</g></svg> Approximate Fees(€) - €72 to 102/Sem</li>' +
-                                            '</ul>' +
-                                            '</div>' +
-                                            '</div>' +
-                                            '<hr>' +
-                                            '<div class="form-group col-md-12 mb-0">' +
-                                            '<a class="apply-btn" href="' + item.website +
-                                            '" style="background-image: linear-gradient(to right, #0452b8 , #38d0da);padding: 5px 20px; display: inline-block; margin-top: 6px; border-radius: 6px;color: white;width: 100%;text-align: center;">View now</a>' +
-                                            '</div>' +
-                                            '</div>' +
-                                            '</div>' +
-                                            '</div>';
+                                        var html = `<div class="col-md-4">
+                                                        <div class="card">`;
+                                                if (item.thumbnail) {
+                                                    html += `<img class="card-img-top" src="${item.thumbnail}" alt="Card image cap">`;
+                                                }
+                                                html += `<div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-md-3 unipd">`;
+                                                if (item.logo) {
+                                                    html += `<img src="${item.logo}">`;
+                                                }
+                                                html += ` </div>
+                                                            <div class="col-md-9 align-self-center">
+                                                                <h5 class="unihd">${item.university_name}</h5>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <ul class="deslist">
+                                                                    <li><i class="fa fa-map"></i>
+                                                                        Location - ${item.university_location}</li>
+                                                                    <li>
+                                                                        <i class="fa fa-flag"></i>
+                                                                        Country -  ${item.country.name}</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-group col-md-12 mb-0">
+                                                            <a class="apply-btn" href="${item.website}" style="background-image: linear-gradient(to right, #0452b8 , #38d0da);padding: 5px 20px; display: inline-block; margin-top: 6px; border-radius: 6px;color: white;width: 100%;text-align: center;">View now</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`;
+
+
                                         $('.universityData').append(html);
                                     });
                                 }

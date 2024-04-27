@@ -24,3 +24,5 @@ Route::prefix('v1')->group(function () {
     Route::get('/nearby',[Apicontroller::class,'nearby']);
     Route::get('/propertyslist',[ApiController::class,'propertyslist']);
 });
+
+Route::post('get-university-by-country-name',[ApiController::class,'getUniversityByCoutryName']);

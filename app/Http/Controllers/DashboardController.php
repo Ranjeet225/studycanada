@@ -10,6 +10,7 @@ use App\Models\Image;
 use App\Models\CountryUniversity;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 
 
 class DashboardController extends Controller
@@ -121,7 +122,12 @@ class DashboardController extends Controller
     }
     public function createSlider()
     {
-        $countries=DB::table('country')->get();
+        $countryData = Http::get('https://overseaseducationlane.com/api/admin/country_list');
+        if ($countryData->successful()) {
+            $countries = json_decode($countryData->body())->data;
+        } else {
+            $statusCode = $countryData->status();
+        }
         return view('admin.slider.create',compact('countries'));
     }
     public function fetchStates(Request $request)
@@ -160,7 +166,13 @@ class DashboardController extends Controller
     public function editSlider($id)
     {
         $slider=Slider::find($id);
-        $countries=DB::table('country')->get();
+        $countryData = Http::get('https://overseaseducationlane.com/api/admin/country_list');
+        if ($countryData->successful()) {
+            $countries = json_decode($countryData->body())->data;
+        } else {
+            $statusCode = $countryData->status();
+        }
+
         return view('admin.slider.edit', compact('slider','countries'));
     }
     public function updateSlider(Request $request, $id)
@@ -225,7 +237,12 @@ class DashboardController extends Controller
      }
      public function createUniversity()
      {
-        $countries=DB::table('country')->get();
+         $countryData = Http::get('https://overseaseducationlane.com/api/admin/country_list');
+        if ($countryData->successful()) {
+            $countries = json_decode($countryData->body())->data;
+        } else {
+            $statusCode = $countryData->status();
+        }
          return view('admin.university.create',compact('countries'));
      }
      public function storeUniversity(Request $request)
@@ -443,7 +460,13 @@ class DashboardController extends Controller
     }
     public function createCountryUniversity()
     {
-        $countries=DB::table('country')->get();
+        // $countries=DB::table('country')->get();
+        $countryData = Http::get('https://overseaseducationlane.com/api/admin/country_list');
+        if ($countryData->successful()) {
+            $countries = json_decode($countryData->body())->data;
+        } else {
+            $statusCode = $countryData->status();
+        }
         return view('admin.countryuniversity.create',compact('countries'));
     }
     public function storeCountryUniversity(Request $request)
@@ -466,7 +489,13 @@ class DashboardController extends Controller
     public function editCountryUniversity($id)
     {
         $aboutCountry= DB::table('country_universities')->find($id);
-        $countries=DB::table('country')->get();
+        $countryData = Http::get('https://overseaseducationlane.com/api/admin/country_list');
+        if ($countryData->successful()) {
+            $countries = json_decode($countryData->body())->data;
+        } else {
+            $statusCode = $countryData->status();
+        }
+
         return view('admin.countryuniversity.edit', compact('aboutCountry','countries'));
     }
     public function updateCountryUniversity(Request $request, $id)
